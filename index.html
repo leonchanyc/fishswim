@@ -1,0 +1,110 @@
+# Swimming Fish ASCII Animation
+# Usage: irm your-url/fish-animation.ps1 | iex
+
+# Hide cursor
+[Console]::CursorVisible = $false
+
+# Large Fish ASCII Art patterns (swimming right to left)
+$fishFrames = @(
+    @"
+                   ,"(
+                ////\
+                           _
+               (//////--,,,,,_____            ,"
+             _;"""----/////_______;,,        //
+ __________;"o,-------------......"""""`'-._/(
+       ""'==._.__,;;;;"""           ____,.-.==
+              "-.:______,...;---""/"   "    \(
+                  '-._      `-._("           \\
+                      '-._                    '._
+"@,
+    @"
+                   ,"(
+                ////\
+                           _
+               (//////--,,,,,_____            ,"
+             _;"""----/////_______;,,        //
+ __________;"o,-------------......"""""`'-._/(
+       ""'==._.__,;;;;"""           ____,.-.==
+              "-.:______,...;---""/"   "    \(
+                  '-._      `-._("           \\
+                      '-._                    '._
+"@
+)
+
+# Get terminal width
+$width = $Host.UI.RawUI.WindowSize.Width
+
+# Clear screen
+Clear-Host
+
+# Animation loop - infinite
+$position = $width
+$frameIndex = 0
+$startTime = Get-Date
+
+try {
+    while ($true) {
+        # Clear screen
+        Clear-Host
+        
+        # Calculate elapsed time
+        $elapsed = (Get-Date) - $startTime
+        $timeString = "{0:D2}:{1:D2}:{2:D2}" -f $elapsed.Hours, $elapsed.Minutes, $elapsed.Seconds
+        
+        Write-Host "`n  YOUR COMPUTER HAS BEEN TAKEN OVER BY FISH" -ForegroundColor Cyan
+        Write-Host "  Time since fish invasion: $timeString" -ForegroundColor Yellow
+        Write-Host "  Please buy fish food to make them leave!" -ForegroundColor White
+        Write-Host ""
+        
+        # Get current fish frame
+        $currentFish = $fishFrames[$frameIndex % $fishFrames.Count]
+        $fishLines = $currentFish -split "`n"
+        
+        # Draw water surface
+        Write-Host ('~' * $width) -ForegroundColor DarkCyan
+        Write-Host ('~' * $width) -ForegroundColor Blue
+        Write-Host ""
+        Write-Host ""
+        
+        # Draw fish with offset (swimming right to left)
+        foreach ($line in $fishLines) {
+            if ($line.Trim() -ne "") {
+                $spaces = ' ' * [Math]::Max(0, $position)
+                Write-Host "$spaces" -NoNewline
+                Write-Host $line -ForegroundColor Cyan
+            } else {
+                Write-Host ""
+            }
+        }
+        
+        # Draw ocean floor
+        Write-Host ""
+        Write-Host ""
+        Write-Host ('~' * $width) -ForegroundColor DarkBlue
+        Write-Host ('=' * $width) -ForegroundColor DarkYellow
+        
+        # Update position (move left)
+        $position -= 2
+        
+        # Reset position when fish goes off screen (loop back from right)
+        # Fish is about 50 chars wide, so reset when it's fully off screen
+        if ($position -lt -50) {
+            $position = $width
+        }
+        
+        $frameIndex += 1
+        
+        # Delay
+        Start-Sleep -Milliseconds 80
+    }
+    
+} finally {
+    # Restore cursor
+    [Console]::CursorVisible = $true
+    Clear-Host
+    Write-Host "`n`n  FISH INVASION TERMINATED!" -ForegroundColor Green
+    Write-Host "`n  Your computer is safe... for now." -ForegroundColor Yellow
+    Write-Host "`n  The fish will return...`n" -ForegroundColor Cyan
+    Start-Sleep -Seconds 2
+}
