@@ -1,6 +1,25 @@
 # Swimming Fish ASCII Animation
 # Usage: irm your-url/fish-animation.ps1 | iex
 
+# Set terminal window size to ensure fish displays properly
+try {
+    $pshost = Get-Host
+    $pswindow = $pshost.UI.RawUI
+    
+    # Set buffer and window size (width x height)
+    $newsize = $pswindow.BufferSize
+    $newsize.Width = 120
+    $newsize.Height = 3000
+    $pswindow.BufferSize = $newsize
+    
+    $newsize = $pswindow.WindowSize
+    $newsize.Width = 120
+    $newsize.Height = 30
+    $pswindow.WindowSize = $newsize
+} catch {
+    # If resize fails, continue anyway
+}
+
 # Hide cursor
 [Console]::CursorVisible = $false
 
