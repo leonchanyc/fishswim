@@ -6,6 +6,10 @@ try {
     $pshost = Get-Host
     $pswindow = $pshost.UI.RawUI
     
+    # Set background to PowerShell blue and text to white
+    $pswindow.BackgroundColor = "DarkBlue"
+    $pswindow.ForegroundColor = "White"
+    
     # Set buffer and window size (width x height)
     $newsize = $pswindow.BufferSize
     $newsize.Width = 120
@@ -122,7 +126,7 @@ try {
     # Restore cursor
     [Console]::CursorVisible = $true
     Clear-Host
-    Write-Host "`n`n  YOU JUST KILLED THE FISH " -ForegroundColor Red
+    Write-Host "`n`n  YOU KILLED MY FISH " -ForegroundColor Green
     #Write-Host "`n  Your computer is safe... for now." -ForegroundColor Yellow
     Write-Host "`n  The fish will return to your dreams tonight...`n" -ForegroundColor Cyan
     Start-Sleep -Seconds 2
