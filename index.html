@@ -6,10 +6,6 @@ try {
     $pshost = Get-Host
     $pswindow = $pshost.UI.RawUI
     
-    # Set background to PowerShell blue and text to white
-    $pswindow.BackgroundColor = "DarkBlue"
-    $pswindow.ForegroundColor = "White"
-    
     # Set buffer and window size (width x height)
     $newsize = $pswindow.BufferSize
     $newsize.Width = 120
